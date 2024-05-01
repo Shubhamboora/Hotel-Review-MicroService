@@ -26,6 +26,9 @@ This branch contains code for below microservices and there minimum required con
 
 
 Directions to run this project
+
   Need to clone main branch
+  
   setup mongoDB
+  
   setup mysql server
