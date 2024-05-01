@@ -1,6 +1,6 @@
 # Hotel-Review-MicroService
 
-Describtion
+##Describtion
 This project is developed to gain understanding of microservices. In this project I am developing a hotel rating application using the concept of microservice.
 
 Technologies used:
@@ -13,6 +13,7 @@ Technologies used:
 
 4.MongoDb
 
+
 This branch contains code for below microservices and there minimum required configrations
 
 1.User Service
@@ -22,3 +23,6 @@ This branch contains code for below microservices and there minimum required con
 3.Hotel Service
 
 4.Service Registry
+
+
+Directions to run this project
