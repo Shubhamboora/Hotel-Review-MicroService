@@ -20,19 +20,21 @@ spring:
           predicates:
             - Path=/rating/**
 
+  config:
+    import: configserver:http://localhost:8086
 
 
 server:
   port: 8085
 
 
-eureka:
-  instance:
-    prefer-ip-address: true
-
-  client:
-    fetch-registry: true
-    register-with-eureka: true
-
-    service-url:
-      defaultZone: http://localhost:8084/eureka
+#eureka:
+#  instance:
+#    prefer-ip-address: true
+#
+#  client:
+#    fetch-registry: true
+#    register-with-eureka: true
+#
+#    service-url:
+#      defaultZone: http://localhost:8084/eureka
