@@ -2,6 +2,10 @@ package com.shb.user.service.controller;
 
 import com.shb.user.service.entity.User;
 import com.shb.user.service.services.UserService;
+import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
+import io.github.resilience4j.ratelimiter.annotation.RateLimiter;
+import io.github.resilience4j.retry.annotation.Retry;
+import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,6 +25,9 @@ public class UserControler {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private Logger logger;
     //create
     @PostMapping("/create")
     public ResponseEntity<User> createUser(@RequestBody User user){
@@ -30,9 +37,26 @@ public class UserControler {
 
     //single user
     @GetMapping("/{id}")
+    //@CircuitBreaker(name = "ratingHotelBreaker", fallbackMethod = "ratingHotelFallback")
+    //@Retry(name = "ratingHotelService", fallbackMethod = "ratingHotelFallback")
+    @RateLimiter(name = "userRateLimiter", fallbackMethod = "ratingHotelFallback")
     public ResponseEntity<User> getUserById(@PathVariable String id){
+        logger.info("Making Request");
         User user = userService.getUser(id);
         
+        return ResponseEntity.status(HttpStatus.OK).body(user);
+    }
+
+    //creating fallback method for circuit breaker
+    public ResponseEntity<User> ratingHotelFallback(String userId, Exception ex){
+        logger.info("Fallback is executed because service is down: {}", ex.getMessage());
+        User user = User.builder()
+                .email("dummy@gmail.com")
+                .name("dummy")
+                .about("This is a dummy user.")
+                .userId("123141")
+                .build();
+
         return ResponseEntity.status(HttpStatus.OK).body(user);
     }
 
