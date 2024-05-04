@@ -36,3 +36,55 @@ spring:
 #
 #    service-url:
 #      defaultZone: http://localhost:8084/eureka
+
+
+
+############### Actuators
+management:
+  health:
+    circuitbreakers:
+      enabled: true
+
+  endpoints:
+    web:
+      exposure:
+        # There can be multiple things we can expose we are just exposing health component
+        include: health
+
+  endpoint:
+    health:
+      show-details: always
+
+
+
+
+################ resilience4J
+resilience4j:
+  circuitbreaker:
+    instances:
+      #This below property is name of circuit breaker which we used on controller
+      ratingHotelBreaker:
+
+        registerHealthIndicator: true
+        eventConsumerBufferSize: 10
+        failureRateThreshold: 50
+        minimumNumberOfCalls: 5
+        automaticTransitionFromOpenToHalfOpenEnabled: true
+        waitDurationInOpenState: 6s
+        permittedNumberOfCallsInHalfOpenState: 3
+        slidingWindowSize: 10
+        slidingWindowType: COUNT_BASED
+
+  retry:
+    instances:
+      ratingHotelService:
+        max-attempts: 3
+        wait-duration: 5s
+
+
+  ratelimiter:
+    instances:
+      userRateLimiter:
+        limit-refresh-period: 4s
+        limit-for-period: 2
+        timeout-duration: 0s
