@@ -51,6 +51,7 @@ public class UserServiceImpl implements UserService {
 
         List<User> users = userRepository.findAll();
 
+
         List<User> collect = users.stream().map(user -> {
 
             //Fetch ratings given by user.

@@ -19,10 +19,29 @@ spring:
       hibernate:
       dialect:  org.hibernate.dialect.MySQL8Dialect
 
-
-
   config:
     import: configserver:http://localhost:8086
+
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: https://dev-92229183.okta.com/oauth2/default
+      client:
+        registration:
+          my-internal-client:
+            provider: okta
+            authorization-grant-type: client_credentials
+            scope: internal
+            client-id: 0oagvrpvtkqWLaqba5d7
+            client-secret: QT6z5MiXpYJodDOi-2Z-hGAK-nIq-398ac4OmOzZFeEOyZEENCpYZgaKt7CGoySE
+        provider:
+          okta:
+            issuer-uri: https://dev-92229183.okta.com/oauth2/default
+
+
+#  main:
+#    allow-circular-references: true
 
 
 
@@ -88,3 +107,11 @@ resilience4j:
         limit-refresh-period: 4s
         limit-for-period: 2
         timeout-duration: 0s
+
+
+okta:
+  oauth2:
+    issuer: https://dev-92229183.okta.com/oauth2/default
+    audience: api://default
+
+#######This service will also call other microservices too so It will act as client also
